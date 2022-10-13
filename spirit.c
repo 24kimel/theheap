@@ -16,7 +16,7 @@ void get_shell(const char *perms) {
     system("/bin/sh");
 }
 
-char query[0x30] = { 0 };
+char query[0x30] __attribute__ ((aligned (0x10))) = { 0 };
 
 int main() {
     char *perms;
