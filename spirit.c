@@ -20,12 +20,12 @@ char query[0x30] __attribute__ ((aligned (0x10))) = { 0 };
 
 int main() {
     char *perms;
+    unsigned long long query_ptr;
     
     puts("Loading the browser...");
     puts("Welcome to Spirit, the world's most vulnerable web browser");
 
-    //free()'ing the automatic variable query
-    free(query); 
+    free(query + 0x10); 
     perms = malloc(BUF_LEN);
     memset(perms, 0, BUF_LEN);
     while(1) {
