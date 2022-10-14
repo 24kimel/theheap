@@ -1,52 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
 
-void get_shell(const char *perms) {
-    int i;
-    for(i = 1; i < 0x30; i++) {
-        if(perms[i] == 0) {
-            puts("You aren't privileged enough to control this machine");
-            puts("But you can still enjoy our browser");
-            return;
-        }
+void get_shell(char *str) {
+    if(strncmp(str, "sudo ls", 7) == 0) {
+        system("/bin/sh");
     }
-    puts("Hello, privileged user :). I know I can trust you with my shell");
-    system("/bin/sh");
+    else{
+        puts("You don't have the privilege to control this machine");
+    }
 }
 
-char query[0x30] __attribute__ ((aligned (0x10))) = { 0 };
-
 int main() {
-    char *perms;
-    int i;
-    unsigned long long *a = (unsigned long long *)&query[0x10];
-    char *message = malloc(0x30);
+	setbuf(stdout, NULL);
+	malloc(1);
 
-    strcpy(message, "Loading the browser...");
-    setbuf(stdout, NULL);
+	unsigned long long *a;
+	unsigned long long fake_chunk[10] __attribute__ ((aligned (0x10)));
 
-    puts(message);
-    free(message);
-    puts("Welcome to Spirit, the world's most vulnerable web browser");
+	fake_chunk[1] = 0x40; // size | AMP flags
+	a = &fake_chunk[2]; // pointer to the payload
+	free(a);
 
-    read(0, query, 0x40);
-    free(a); 
-    perms = malloc(0x30);
+	void *perms = malloc(0x30);
     memset(perms, 0, 0x30);
-    while(1) {
-        if(strncmp(query, "WEBSHELL", 8) == 0) {
-            get_shell(perms);
-        }
-        if(strncmp(query, "EXIT", 4) == 0) {
-            break;
-        }
-        if(strncmp(query, "SEARCH", 6) == 0) {
-            puts("This service is unavailable due to maintenance");
-        }
-        fgets(query + 0x10, 0x30, stdin);
-    }
-    free(perms);
+    printf("Give me your input: ");
+    read(0, (char *)a, 0x30);
+    get_shell(perms);
     return 0;
 }
