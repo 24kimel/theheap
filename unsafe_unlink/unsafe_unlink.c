@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #define DEBUG_LEAK 1
 
-void secrect_technician_area() {
+void secret_technician_area() {
     system("/bin/sh");
 }
 

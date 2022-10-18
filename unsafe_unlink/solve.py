@@ -1,9 +1,9 @@
 from pwn import *
 
 # REGULAR SOLVE
-p = process('./vuln')
+p = process('./unsafe_unlink')
 # DEBUG WSL PREP
-# p = gdb.debug(args=['./vuln'], exe='./vuln', gdbscript='''
+# p = gdb.debug(args=['./unsafe_unlink'], exe='./unsafe_unlink', gdbscript='''
 #     b *main
 #     c
 # ''')
