@@ -5,8 +5,8 @@
 int main() {
     void* p1 = (void*)malloc(0x500); // holds the fake chunk
     void* victim = (void*)malloc(0x4f0);
-    void** p2 = (void**)malloc(0x4f0); // part of the show
-    void** p3 = (void**)malloc(0x510); // part of the show
+    void** p2 = (void**)malloc(0x4f0); // part of the plan
+    void** p3 = (void**)malloc(0x510); // part of the plan
 
     // fake chunk
     ((size_t*)p1)[1] = 0x501; // size
