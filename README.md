@@ -3,4 +3,4 @@
 All of the source files presented here are referred to in the paper itself.
 We hope you'll learn something new from this paper.
 
-Notice that there are some URLs in this document. If you'd like to click them, you'd need to download the PDF.
+There are some URLs in the paper. If you'd like to click them, you'd need to download the PDF.
